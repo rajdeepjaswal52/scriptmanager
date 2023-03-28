@@ -1,0 +1,157 @@
+#   ploting number in bubble form using the same order as in input file 
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+data <- read.csv("Species_tree_Associatd_data_1.csv", header = TRUE)
+sample_order <- c("Secretome", "Disordered.secretome","Effectome","Disordered.effectome")
+
+data %>% 
+  gather(sample, value, Secretome:Disordered.effectome) %>%
+  mutate(Species = factor(Species, levels = rev(unique(Species)))) %>%
+  mutate(sample = factor(sample, levels = sample_order, ordered = TRUE)) %>%
+  ggplot(aes(sample, Species, size = value, color = sample)) + 
+  geom_point() +
+  scale_size(range = c(0,10)) +
+  scale_color_brewer(palette = "Set2") +
+  labs(size = "Proteins",sample="Class") +
+  theme_classic() +  
+  xlab("Class") +
+  guides(color = guide_legend(title = "Class"))
+
+
+
+data <- read.csv("Species_tree_Associatd_data_1.csv", header = TRUE)
+sample_order <- c("Secretome", "Disordered.secretome","Effectome","Disordered.effectome")
+ #remove line sfrom the x and y axis
+data %>% 
+  gather(sample, value, Secretome:Disordered.effectome) %>%
+  mutate(Species = factor(Species, levels = rev(unique(Species)))) %>%
+  mutate(sample = factor(sample, levels = sample_order, ordered = TRUE)) %>%
+  ggplot(aes(sample, Species, size = value, color = sample)) + 
+  geom_point() +
+  scale_size(range = c(0,10)) +
+  scale_color_brewer(palette = "Set1") +
+  labs(size = "Proteins",sample="Class") +
+  theme_classic() +  
+  xlab("Class") +
+  guides(color = guide_legend(title = "Class")) +
+  theme(axis.line = element_blank())
+
+ggsave("t44.png", width = 10, height = 8, dpi = 600)
+
+
+
+data %>% 
+  gather(sample, value, Secretome:Disordered.effectome) %>%
+  mutate(Species = factor(Species, levels = rev(unique(Species)))) %>%
+  mutate(sample = factor(sample, levels = sample_order, ordered = TRUE)) %>%
+  ggplot(aes(sample, Species, size = value, color = sample)) + 
+  geom_point() +
+  scale_size(range = c(0,10)) +
+  scale_color_brewer(palette = "Set1") +
+  labs(size = "Proteins",sample="Class") +
+  theme_classic() +  
+  xlab("") +
+  ylab("") +
+  guides(color = guide_legend(title = "Class")) +
+  theme(
+    axis.line = element_blank(),
+    axis.title.x.top = element_text(face = "bold", size = 14, margin = margin(t = 10)),
+    axis.title.y.left = element_text(face = "bold", size = 14, angle = 90, vjust = 1),
+    axis.text.x = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 1)
+  )
+
+ggsave("t46.png", width = 10, height = 8, dpi = 600)
+
+
+# to darken the boiundries of cicle in bubble plot
+
+library(ggplot2)
+library(tidyr)
+
+data <- read.csv("Species_tree_Associatd_data_1.csv", header = TRUE)
+
+sample_order <- c("Secretome", "Disordered.secretome", "Effectome", "Disordered.effectome")
+
+data %>% 
+  gather(sample, value, Secretome:Disordered.effectome) %>%
+  mutate(Species = factor(Species, levels = rev(unique(Species)))) %>%
+  mutate(sample = factor(sample, levels = sample_order, ordered = TRUE)) %>%
+  ggplot(aes(sample, Species, size = value, color = sample)) + 
+  geom_point() +
+  scale_size(range = c(0, 10)) +
+  scale_color_brewer(palette = "Set1") +
+  labs(size = "Proteins", sample = "Class") +
+  theme_classic() +  
+  xlab("Class") +
+  guides(color = guide_legend(title = "Class")) +
+  theme(axis.line = element_blank(),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14))
+
+ggsave("t44.png", width = 10, height = 8, dpi = 600)
+
+
+
+
+
+
+
+
+
+data <- read.csv("Species_tree_Associatd_data_1.csv", header = TRUE)
+
+sample_order <- c("Secretome", "Disordered.secretome", "Effectome", "Disordered.effectome")
+
+data %>% 
+  gather(sample, value, Secretome:Disordered.effectome) %>%
+  mutate(Species = factor(Species, levels = rev(unique(Species)))) %>%
+  mutate(sample = factor(sample, levels = sample_order, ordered = TRUE)) %>%
+  ggplot(aes(sample, Species, size = value, color = sample)) + 
+  geom_point(alpha = 0.5) +
+  geom_text(aes(label = round(value, 2)), 
+            size = 3, 
+            position = position_nudge(x = 0.2),
+            hjust = 0) +
+  scale_size(range = c(0, 10)) +
+  scale_color_brewer(palette = "Set1") +
+  labs(size = "Proteins", sample = "Class") +
+  theme_classic() +  
+  xlab("Class") +
+  guides(color = guide_legend(title = "Class")) +
+  theme(axis.line = element_blank(),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        plot.margin = unit(c(1, 1, 2, 1), "cm"))
+
+ggsave("t45.png", width = 10, height = 8, dpi = 600)
+
+
+#If numbers are also required  with the bubbles
+
+data %>% 
+  gather(sample, value, Secretome:Disordered.effectome) %>%
+  mutate(Species = factor(Species, levels = rev(unique(Species)))) %>%
+  mutate(sample = factor(sample, levels = sample_order, ordered = TRUE)) %>%
+  ggplot(aes(sample, Species, size = value, color = sample)) + 
+  geom_point(alpha = 0.5) +
+  #for numbers
+  geom_text(aes(label = round(value, 2)), 
+            size = 3, 
+            position = position_nudge(x = 0.2),
+            hjust = 0) +
+  scale_size(range = c(0, 10)) +
+  scale_color_brewer(palette = "Set1") +
+  labs(size = "Proteins", sample = "Class") +
+  theme_classic() +  
+  xlab("Class") +
+  guides(color = guide_legend(title = "Class")) +
+  theme(axis.line = element_blank(),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        plot.margin = unit(c(1, 1, 2, 1), "cm"),
+        legend.position = "right") 
+
+ggsave("t47.png", width = 10, height = 8, dpi = 600)
+
